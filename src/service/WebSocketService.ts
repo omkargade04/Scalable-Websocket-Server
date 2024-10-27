@@ -38,7 +38,7 @@ export class WebSocketService {
                 await this.handleSubscribe(id, message.room!);
                 break;
             case 'UNSUBSCRIBE':
-                await this.handleUnsubscribe(id, message.roomId!);
+                await this.handleUnsubscribe(id, message.room!);
                 break;
             case 'SEND_MESSAGE':
                 await this.handleSendMessage(message);
