@@ -213,13 +213,3 @@ The application implements comprehensive error handling:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-## Author
-
-Your Name - [@Omkar Gade](https://github.com/omkargade04)
-
-## Acknowledgments
-
-- Redis for the robust pub/sub system
-- ws package for WebSocket implementation
-- TypeScript team for the amazing type system
