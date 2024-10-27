@@ -1,79 +1,31 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ws_1 = require("ws");
-const redis_1 = require("redis");
-const wss = new ws_1.WebSocketServer({ port: 8081 });
-const publishClient = (0, redis_1.createClient)();
-publishClient.connect();
-const subscribeClient = (0, redis_1.createClient)();
-subscribeClient.connect();
-const subscriptions = {};
-setInterval(() => {
-    console.log(subscriptions);
-}, 5000);
-wss.on('connection', function conncection(userSocket) {
-    const id = randomId();
-    subscriptions[id] = {
-        ws: userSocket,
-        rooms: []
-    };
-    userSocket.on('message', function message(data) {
-        const parsedMessage = JSON.parse(data);
-        if (parsedMessage.type === "SUBSCRIBE") {
-            subscriptions[id].rooms.push(parsedMessage.room);
-            if (oneUserSubscribedTo(parsedMessage.room)) {
-                console.log("Subscribing on the Pub sub on room:" + parsedMessage.room);
-                subscribeClient.subscribe(parsedMessage.room, (message) => {
-                    const parsedMessage = JSON.parse(message);
-                    Object.keys(subscriptions).forEach((userId) => {
-                        const { ws, rooms } = subscriptions[userId];
-                        if (rooms.includes(parsedMessage.roomId)) {
-                            ws.send(parsedMessage.message);
-                        }
-                    });
-                });
-            }
-        }
-        if (parsedMessage.type === "UNSUBSCRIBE") {
-            subscriptions[id].rooms = subscriptions[id].rooms.filter(x => x !== parsedMessage.roomId);
-            if (lastUserLeftRoom(parsedMessage.room)) {
-                console.log("Unsubscribing from Pub sub on room: " + parsedMessage.room);
-                subscribeClient.unsubscribe(parsedMessage.room);
-            }
-        }
-        if (parsedMessage.type === "SEND_MESSAGE") {
-            const message = parsedMessage.message;
-            const roomId = parsedMessage.roomId;
-            publishClient.publish(roomId, JSON.stringify({
-                type: "SEND_MESSAGE",
-                roomId: roomId,
-                message
+const RedisManager_1 = require("./manager/RedisManager");
+const WebSocketService_1 = require("./service/WebSocketService");
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const redisManager = RedisManager_1.RedisManager.getInstance();
+            yield redisManager.connect();
+            const wsService = new WebSocketService_1.WebSocketService(8080);
+            process.on('SIGINT', () => __awaiter(this, void 0, void 0, function* () {
+                yield wsService.close();
+                process.exit(0);
             }));
         }
-    });
-});
-function randomId() {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-}
-function oneUserSubscribedTo(roomId) {
-    let totalUserSubscribed = 0;
-    Object.keys(subscriptions).map((userId) => {
-        if (subscriptions[userId].rooms.includes(roomId)) {
-            totalUserSubscribed++;
+        catch (error) {
+            console.error('Failed to start the server:', error);
+            process.exit(1);
         }
     });
-    if (totalUserSubscribed == 1)
-        return true;
-    return false;
 }
-function lastUserLeftRoom(roomId) {
-    let totalUserSubscribed = 0;
-    Object.keys(subscriptions).map((userId) => {
-        if (subscriptions[userId].rooms.includes(roomId)) {
-            totalUserSubscribed++;
-        }
-    });
-    if (totalUserSubscribed === 0)
-        return true;
-    return false;
-}
+main();
