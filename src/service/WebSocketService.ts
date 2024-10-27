@@ -68,7 +68,7 @@ export class WebSocketService {
     }
 
     private async handleSendMessage(message: Message): Promise<void> {
-        await this.redisManager.publish(message.room!, JSON.stringify({
+        await this.redisManager.publish(message.roomId!, JSON.stringify({
             type: 'SEND_MESSAGE',
             roomId: message.roomId,
             message: message.message
