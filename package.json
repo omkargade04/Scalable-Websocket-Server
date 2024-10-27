@@ -13,6 +13,7 @@
   "description": "",
   "dependencies": {
     "@types/ws": "^8.5.12",
+    "redis": "^4.7.0",
     "ws": "^8.18.0"
   }
 }
