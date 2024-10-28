@@ -1,6 +1,6 @@
 # Scalable WebSocket Server with Redis Pub/Sub
 
-A scalable WebSocket server implementation using Redis Pub/Sub for message distribution across multiple server instances. This architecture allows for horizontal scaling while maintaining real-time message delivery across all connected clients.
+A scalable WebSocket server implementation using Redis Pub/Sub for message distribution across multiple server instances. This architecture allows for horizontal scaling via kubernetes' horizontal pod auto-scaler while maintaining real-time message delivery across all connected clients.
 
 ## Architecture Overview
 
