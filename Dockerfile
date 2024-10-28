@@ -6,9 +6,11 @@ COPY package*.json ./
 
 COPY tsconfig.json ./
 
-RUN npm install
+RUN npm install --only=development
 
-COPY src/ ./src/
+RUN npm install typescript --save-dev
+
+COPY . .
 
 RUN npm run build
 

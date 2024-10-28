@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ws-cpu-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ws-cpu-app
+  template:
+    metadata:
+      labels:
+        app: ws-cpu-app
+    spec:
+      containers:
+      - name: ws-cpu-app
+        image: omkargade04/scalable-ws-server:latest
+        ports:
+        - containerPort: 8080
