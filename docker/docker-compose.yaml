@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  websocket:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - app-network
+
   redis:
     image: redis:latest
     container_name: my-redis
@@ -15,6 +30,10 @@ services:
       retries: 3
     volumes:
       - redis-data:/data
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   redis-data:
