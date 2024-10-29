@@ -165,42 +165,13 @@ class RedisManager {
     
     // Subscribe to channel
     subscribe(channel: string, callback: (message: string) => void): Promise<void>;
+
+    // Unsubscribe to channel
+    unsubscribe(channel: string) => void): Promise<void>;
 }
 ```
 
-### SubscriptionService
 
-```typescript
-class SubscriptionService {
-    // Add new WebSocket subscription
-    addSubscription(ws: WebSocket): string;
-    
-    // Add room to subscription
-    addRoomToSubscription(id: string, room: string): void;
-    
-    // Remove room from subscription
-    removeRoomFromSubscription(id: string, room: string): void;
-}
-```
-
-## Error Handling
-
-The application implements comprehensive error handling:
-
-1. **WebSocket Errors**
-   - Connection failures
-   - Message parsing errors
-   - Protocol errors
-
-2. **Redis Errors**
-   - Connection failures
-   - Pub/Sub errors
-   - Timeout handling
-
-3. **Application Errors**
-   - Room management errors
-   - Message broadcast failures
-   - Invalid message formats
 
 ## Contributing
 
