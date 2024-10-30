@@ -8,7 +8,7 @@ spec:
     kind: Deployment
     name: ws-cpu-deployment
   minReplicas: 2
-  maxReplicas: 5
+  maxReplicas: 10
   metrics:
   - type: Resource
     resource:
@@ -16,3 +16,9 @@ spec:
       target:
         type: Utilization
         averageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 75

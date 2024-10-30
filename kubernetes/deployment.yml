@@ -17,3 +17,10 @@ spec:
         image: omkargade04/scalable-ws-server:latest
         ports:
         - containerPort: 8080
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
