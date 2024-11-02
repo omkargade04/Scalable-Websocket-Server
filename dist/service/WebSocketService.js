@@ -40,7 +40,7 @@ class WebSocketService {
                     yield this.handleSubscribe(id, message.room);
                     break;
                 case 'UNSUBSCRIBE':
-                    yield this.handleUnsubscribe(id, message.roomId);
+                    yield this.handleUnsubscribe(id, message.room);
                     break;
                 case 'SEND_MESSAGE':
                     yield this.handleSendMessage(message);
@@ -71,7 +71,7 @@ class WebSocketService {
     }
     handleSendMessage(message) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.redisManager.publish(message.room, JSON.stringify({
+            yield this.redisManager.publish(message.roomId, JSON.stringify({
                 type: 'SEND_MESSAGE',
                 roomId: message.roomId,
                 message: message.message
