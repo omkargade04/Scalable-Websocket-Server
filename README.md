@@ -49,8 +49,8 @@ sequenceDiagram
 
 1. Clone the repository
 ```bash
-git clone https://github.com/omkargade04/scalable-websocket-server.git
-cd scalable-websocket-server
+git clone https://github.com/omkargade04/Scalable-Websocket-Server.git
+cd Scalable-Websocket-Server
 ```
 
 2. Install dependencies
